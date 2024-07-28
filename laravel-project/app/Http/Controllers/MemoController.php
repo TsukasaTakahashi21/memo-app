@@ -9,16 +9,20 @@ use App\UseCase\CreateMemo\CreateInput;
 use App\UseCase\CreateMemo\CreateInteractor;
 use App\UseCase\UpdateMemo\UpdateInput;
 use App\UseCase\UpdateMemo\UpdateInteractor;
+use App\UseCase\DeleteMemo\DeleteInput;
+use App\UseCase\DeleteMemo\DeleteInteractor;
 
 class MemoController extends Controller
 {
     protected $createInteractor;
     protected $updateInteractor;
+    protected $deleteInteractor;
     
-    public function __construct(CreateInteractor $createInteractor, UpdateInteractor $updateInteractor)
+    public function __construct(CreateInteractor $createInteractor, UpdateInteractor $updateInteractor, DeleteInteractor $deleteInteractor)
     {
         $this->createInteractor = $createInteractor;
         $this->updateInteractor = $updateInteractor;
+        $this->deleteInteractor = $deleteInteractor;
     }
 
     /**
@@ -117,8 +121,9 @@ class MemoController extends Controller
      */
     public function destroy($id)
     {
-        $memo = Memo::find($id);
-        $memo->delete();
+        $input = new DeleteInput($id);
+        $this->deleteInteractor->handle($input);
+
         return redirect()->route('memo.index');
     }
 }
