@@ -7,14 +7,18 @@ use Validator;
 use App\Models\Memo;
 use App\UseCase\CreateMemo\CreateInput;
 use App\UseCase\CreateMemo\CreateInteractor;
+use App\UseCase\UpdateMemo\UpdateInput;
+use App\UseCase\UpdateMemo\UpdateInteractor;
 
 class MemoController extends Controller
 {
     protected $createInteractor;
+    protected $updateInteractor;
     
-    public function __construct(CreateInteractor $createInteractor)
+    public function __construct(CreateInteractor $createInteractor, UpdateInteractor $updateInteractor)
     {
         $this->createInteractor = $createInteractor;
+        $this->updateInteractor = $updateInteractor;
     }
 
     /**
@@ -94,18 +98,15 @@ class MemoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $memo = Memo::find($id);
+        $validated = $request->validate([
+            'title' => 'required|string',
+            'content' => 'required|string'
+        ]);
 
-        if (!$memo) {
-            return redirect()->route('memo.index');
-        }
-
-        $memo->title = $request->input('title');
-        $memo->content = $request->input('content');
-        $memo->save();
+        $input = new UpdateInput($id, $validated['title'], $validated['content']);
+        $this->updateInteractor->handle($input);
 
         return redirect()->route('memo.index');
-
     }
 
     /**
