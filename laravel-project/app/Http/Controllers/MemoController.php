@@ -5,9 +5,18 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Validator;
 use App\Models\Memo;
+use App\UseCase\CreateMemo\CreateInput;
+use App\UseCase\CreateMemo\CreateInteractor;
 
 class MemoController extends Controller
 {
+    protected $createInteractor;
+    
+    public function __construct(CreateInteractor $createInteractor)
+    {
+        $this->createInteractor = $createInteractor;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -42,10 +51,8 @@ class MemoController extends Controller
             'content' => 'required|string',
         ]);
 
-        $memo = new Memo();
-        $memo->title = $validated['title'];
-        $memo->content = $validated['content'];
-        $memo->save();
+        $input = new CreateInput($validated['title'], $validated['content']);
+        $this->createInteractor->handle($input);
 
         return redirect()->route('memo.index');
     }
@@ -114,3 +121,4 @@ class MemoController extends Controller
         return redirect()->route('memo.index');
     }
 }
+
