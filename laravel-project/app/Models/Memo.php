@@ -12,4 +12,14 @@ class Memo extends Model
     // titleおよびcontentフィールドをマスアサインメントで使用
     // 入力データを使ってモデルの属性を一括で設定
     protected $fillable = ['title', 'content'];
+
+    public function getTitleAttribute($value)
+    {
+        return new \App\ValueObject\Title($value);
+    }
+
+    public function getContentAttribute($value)
+    {
+        return new \App\ValueObject\Content($value);
+    }
 }

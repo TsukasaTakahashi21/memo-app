@@ -11,6 +11,10 @@ use App\UseCase\UpdateMemo\UpdateInput;
 use App\UseCase\UpdateMemo\UpdateInteractor;
 use App\UseCase\DeleteMemo\DeleteInput;
 use App\UseCase\DeleteMemo\DeleteInteractor;
+use App\ValueObject\Title;
+use App\ValueObject\Content;
+use InvalidArgumentException;
+
 
 class MemoController extends Controller
 {
@@ -55,14 +59,25 @@ class MemoController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'title' => 'required|string',
+            'title' => 'required|string|max:255',
             'content' => 'required|string',
+        ], [
+            'title.required' => 'タイトルを入力してください',
+            'title.max' => 'タイトルは255文字以下で入力してください',
+            'content.required' => '内容を入力してください',
         ]);
 
-        $input = new CreateInput($validated['title'], $validated['content']);
-        $this->createInteractor->handle($input);
+        try{
+            $title = new Title($validated['title']);
+            $content = new Content($validated['content']);
+            $input = new CreateInput($title, $content);
+            $this->createInteractor->handle($input);
+        
+            return redirect()->route('memo.index');
+        } catch (InvalidArgumentException $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()])->withInput();
+        }
 
-        return redirect()->route('memo.index');
     }
 
     /**
@@ -107,7 +122,10 @@ class MemoController extends Controller
             'content' => 'required|string'
         ]);
 
-        $input = new UpdateInput($id, $validated['title'], $validated['content']);
+        $title = new Title($validated['title']);
+        $content = new Content($validated['content']);
+
+        $input = new UpdateInput($id, $title, $content);
         $this->updateInteractor->handle($input);
 
         return redirect()->route('memo.index');

@@ -33,8 +33,8 @@
 
     @foreach($memos as $memo)
     <tr class="table-tr">
-      <td class="table-td">{{ $memo->title }}</td>
-      <td class="table-td">{{ $memo->content }}</td>
+      <td class="table-td">{{ $memo->title->getValue() }}</td>
+      <td class="table-td">{{ $memo->content->getValue() }}</td>
       <td class="table-td">{{ $memo->created_at }}</td>
       <td class="table-td">
         <a href="{{ route('memo.edit', ['id' => $memo->id]) }}" class="edit-link">編集</a>

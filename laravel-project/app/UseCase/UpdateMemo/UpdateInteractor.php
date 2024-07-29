@@ -4,6 +4,8 @@ namespace App\UseCase\UpdateMemo;
 use App\Models\Memo;
 use App\UseCase\UpdateMemo\UpdateInput;
 use App\UseCase\UpdateMemo\UpdateOutput;
+use App\ValueObject\Title;
+use App\ValueObject\Content;
 use InvalidArgumentException;
 
 class UpdateInteractor
@@ -14,6 +16,9 @@ class UpdateInteractor
     $title = $input->getTitle();
     $content = $input->getContent();
 
+    $titleValue = $title->getValue();
+    $contentValue = $content->getValue();
+    
     if (empty($title) && empty($content)) {
       throw new InvalidArgumentException('タイトルと本文の両方が入力されていません');
     }
@@ -31,10 +36,10 @@ class UpdateInteractor
       throw new InvalidArgumentException('指定されたメモが見つかりません。');
     }
 
-    $memo->title = $title;
-    $memo->content = $content;
+    $memo->title = $titleValue;
+    $memo->content = $contentValue;
     $memo->save();
 
-    return new UpdateOutput($memo->id, $memo->title, $memo->content);
+    return new UpdateOutput($memo->id, new Title($titleValue), new Content($contentValue));
   }
 }
