@@ -34,9 +34,27 @@ class MemoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $memos = Memo::all();
+        $query = Memo::query();
+        // 検索機能
+        if ($search = $request->query('search')) {
+            $query->where('title', 'like', '%'.$search.'%')
+                    ->orWhere('content', 'like', '%'. $search. '%');
+        }
+
+        // ソート機能（新しい順、古い順）
+        if ($sort = $request->query('sort')) {
+            if ($sort === 'newest') {
+                $query->orderBy('created_at', 'desc');
+            } elseif ($sort === 'oldest') {
+            $query->orderBy('created_at', 'asc');
+            }
+        } else {
+            $query->orderBy('created_at', 'desc');
+        }
+
+        $memos = $query->get();
         return view('memo.index', compact('memos'));
     }
 
