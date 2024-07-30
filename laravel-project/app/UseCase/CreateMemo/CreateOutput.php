@@ -1,13 +1,16 @@
 <?php
 namespace App\UseCase\CreateMemo;
 
+use App\ValueObject\Title;
+use App\ValueObject\Content;
+
 class CreateOutput
 {
     private $id;
     private $title;
     private $content;
 
-    public function __construct(int $id, string $title, string $content)
+    public function __construct(int $id, Title $title, Content $content)
     {
         $this->id = $id;
         $this->title = $title;
@@ -19,12 +22,12 @@ class CreateOutput
         return $this->id;
     }
 
-    public function getTitle(): string
+    public function getTitle(): Title
     {
         return $this->title;
     }
 
-    public function getContent(): string
+    public function getContent(): Content
     {
         return $this->content;
     }
