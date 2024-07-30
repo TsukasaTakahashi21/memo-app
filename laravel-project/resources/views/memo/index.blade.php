@@ -2,7 +2,7 @@
   <!-- 絞り込み検索 -->
   <form action="" class="search-form" method="GET">
     @csrf
-    <input type="text" name="search" placeholder="Search..." class="search-form-input" value="">
+    <input type="text" name="search" placeholder="Search..." class="search-form-input" value="{{ request('search') }}">
     <button type="submit" class="search-form-button">検索</button>
   </form>
 
@@ -12,13 +12,15 @@
   <div class="link"><a href="{{ route('memo.create') }}" class="link-create">メモを追加</a></div>
 
   <div class="sort">
-    <form action="" class="sort-new" method="GET">
+    <form action="{{ route('memo.index') }}" class="sort-new" method="GET">
       @csrf
-      <button type="submit" class="sort-new-button">新しい順</button>
+      <input type="hidden" name="search" value="{{ request('search') }}">
+      <button type="submit" class="sort-new-button" name="sort" value="newest">新しい順</button>
     </form>
-    <form action="" class="sort-old" method="GET">
+    <form action="{{ route('memo.index') }}" class="sort-old" method="GET">
       @csrf
-      <button type="submit" class="sort-old-button">古い順</button>
+      <input type="hidden" name="search" value="{{ request('search') }}">
+      <button type="submit" class="sort-old-button" name="sort" value="oldest">古い順</button>
     </form>
   </div>
 
@@ -33,8 +35,8 @@
 
     @foreach($memos as $memo)
     <tr class="table-tr">
-      <td class="table-td">{{ $memo->title }}</td>
-      <td class="table-td">{{ $memo->content }}</td>
+      <td class="table-td">{{ $memo->title->getValue() }}</td>
+      <td class="table-td">{{ $memo->content->getValue() }}</td>
       <td class="table-td">{{ $memo->created_at }}</td>
       <td class="table-td">
         <a href="{{ route('memo.edit', ['id' => $memo->id]) }}" class="edit-link">編集</a>
