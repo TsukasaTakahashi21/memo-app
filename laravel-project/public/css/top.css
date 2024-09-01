@@ -1,0 +1,137 @@
+/* 絞り込み検索セクション */
+.filter {
+  margin-bottom: 3rem;
+}
+.memo-filter {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* 検索フォーム */
+.search-form {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem; /* ボタンと入力フィールドの間隔を調整 */
+}
+
+.search-form-input, .search-form-select {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  min-width: 200px;
+}
+
+.search-form-button {
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.search-form-button:hover {
+  background-color: #0056b3;
+}
+
+/* ソートボタン */
+.sort {
+  display: flex;
+  gap: 0.5rem; /* ボタン間の余白 */
+}
+
+.sort-new-button, .sort-old-button {
+  padding: 0.5rem 1rem;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.sort-new-button:hover, .sort-old-button:hover {
+  background-color: #5a6268;
+}
+
+/* テーブル */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.table-th, .table-td {
+  padding: 0.75rem;
+  text-align: center;  
+  vertical-align: middle;
+}
+
+.table-th {
+  background-color: #f4f4f4;
+  border-bottom: 2px solid #ddd;
+}
+
+.table-tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.table-td {
+  border-bottom: 1px solid #ddd;
+}
+
+/* 編集リンクと削除ボタン */
+.edit-link {
+  color: #007bff;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  background: none; 
+}
+
+.edit-link:hover {
+  color: #0056b3; 
+}
+
+/* 削除ボタンをリンクのように表示 */
+.delete-link {
+  background: none; 
+  border: none; 
+  color: #007bff; 
+  padding: 0; 
+  font-size: inherit; 
+  cursor: pointer;
+}
+
+.delete-link:hover {
+  color: #0056b3; 
+}
+
+
+
+
+/* フォーム要素のスタイル */
+input[type="text"], select {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+input[type="submit"] {
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type="submit"]:hover {
+  background-color: #0056b3;
+}
