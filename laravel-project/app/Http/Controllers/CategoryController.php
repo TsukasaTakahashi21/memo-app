@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 
 class CategoryController extends Controller
@@ -18,44 +18,27 @@ class CategoryController extends Controller
         return view('categories.create');
     }
 
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:50|unique:categories,name',
-        ], [
-            'name.required' => 'カテゴリ名を入力してください',
-            'name.max' => 'カテゴリ名は50文字以下で入力してください',
-            'name.unique' => 'このカテゴリ名はすでに存在します',
-        ]);
-
-        Category::create($request->all());
-
+        Category::create($request->validated());
         return redirect()->route('categories.index');
     }
 
-    public function edit($id)
+    public function edit(int $id)
     {
         $category = Category::findOrFail($id);
         return view('categories.edit', compact('category'));
     }
 
-    public function update(Request $request, $id)
+    public function update(CategoryRequest $request, $id)
     {
-        $request->validate([
-            'name' => 'required|string|max:50|unique:categories,name,'
-        ], [
-            'name.required' => 'カテゴリ名を入力してください',
-            'name.max' => 'カテゴリ名は50文字以下で入力してください',
-            'name.unique' => 'このカテゴリ名はすでに存在します',
-        ]);
-
         $category = Category::findOrFail($id);
-        $category->update($request->only('name'));
+        $category->update($request->validated());
 
         return redirect()->route('categories.index');
     }
 
-    public function destroy($id)
+    public function destroy(int $id)
     {
         $category = Category::findOrFail($id);
         $category->delete();

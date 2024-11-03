@@ -31,7 +31,7 @@
             @csrf
             <div class="form-group">
                 <label for="name" class="form-label">カテゴリ名 :</label>
-                <input type="text" name="name" id="name" placeholder="カテゴリ名" class="form-input" value="">
+                <input type="text" name="name" id="name" placeholder="カテゴリ名" class="form-input" value="{{ old('name') }}">
             </div>
 
             <div class="submit-group">
