@@ -3,14 +3,13 @@ namespace App\UseCase\UpdateMemo;
 
 use App\Models\Memo;
 use App\UseCase\UpdateMemo\UpdateInput;
-use App\UseCase\UpdateMemo\UpdateOutput;
 use App\ValueObject\Title;
 use App\ValueObject\Content;
 use InvalidArgumentException;
 
 class UpdateInteractor
 {
-  public function handle(UpdateInput $input): UpdateOutput
+  public function handle(UpdateInput $input)
   {
     $id = $input->getId();
     $title = $input->getTitle();
@@ -39,7 +38,5 @@ class UpdateInteractor
     $memo->title = $titleValue;
     $memo->content = $contentValue;
     $memo->save();
-
-    return new UpdateOutput($memo->id, new Title($titleValue), new Content($contentValue));
   }
 }
