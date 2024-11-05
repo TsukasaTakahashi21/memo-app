@@ -1,0 +1,70 @@
+/* 全体のスタイル */
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+}
+
+/* ヘッダーのスタイル */
+header {
+  background-color: #007bff;
+  color: white;
+  padding: 1rem;
+}
+
+/* ナビゲーションメニューのスタイル */
+.nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nav-list {
+  display: flex;
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  transition: background-color 0.3s;
+}
+
+.nav-link:hover {
+  background-color: #555;
+  border-radius: 4px;
+}
+
+.nav-link:not(:last-child) {
+  margin-right: 1rem;
+}
+
+
+/* 全体のコンテナを中央に配置 */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem;
+  text-align: center;
+}
+
+/* エラーメッセージ */
+.error-messages {
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  color: #721c24;
+}
+
+.error-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.error-item {
+  margin-bottom: 5px;
+}

@@ -1,0 +1,140 @@
+
+.filter {
+  margin-bottom: 3rem;
+}
+
+.memo-filter {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.search-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem; 
+  width: 100%;
+}
+
+.search-form-input, .search-form-select {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  min-width: 200px;
+}
+
+.search-form-button {
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.search-form-button:hover {
+  background-color: #0056b3;
+}
+
+/* ソートボタン */
+.sort {
+  display: flex;
+  gap: 0.5rem; 
+}
+
+.sort-new-button, .sort-old-button {
+  padding: 0.5rem 1rem;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.sort-new-button:hover, .sort-old-button:hover {
+  background-color: #5a6268;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.table-th, .table-td {
+  padding: 0.75rem;
+  text-align: center;  
+  vertical-align: middle;
+}
+
+.table-th {
+  background-color: #f4f4f4;
+  border-bottom: 2px solid #ddd;
+}
+
+.table-tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.table-td {
+  border-bottom: 1px solid #ddd;
+}
+
+.edit-link {
+  color: #007bff;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  background: none; 
+}
+
+.edit-link:hover {
+  color: #0056b3; 
+}
+
+.delete-link {
+  background: none; 
+  border: none; 
+  color: #007bff; 
+  padding: 0; 
+  font-size: inherit; 
+  cursor: pointer;
+}
+
+.delete-link:hover {
+  color: #0056b3; 
+}
+
+input[type="text"], select {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+input[type="submit"] {
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+.memo-detail {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: ##f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}

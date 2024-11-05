@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreMemoRequest;
+use App\Http\Requests\UpdateMemoRequest;
 use Illuminate\Http\Request;
-use Validator;
 use App\Models\Memo;
+use App\Models\Category;
+use App\Repositories\MemoRepository;
 use App\UseCase\CreateMemo\CreateInput;
 use App\UseCase\CreateMemo\CreateInteractor;
 use App\UseCase\UpdateMemo\UpdateInput;
@@ -13,154 +16,113 @@ use App\UseCase\DeleteMemo\DeleteInput;
 use App\UseCase\DeleteMemo\DeleteInteractor;
 use App\ValueObject\Title;
 use App\ValueObject\Content;
+use Illuminate\Support\Str;
 use InvalidArgumentException;
-
 
 class MemoController extends Controller
 {
+    protected $memoRepository;
     protected $createInteractor;
     protected $updateInteractor;
     protected $deleteInteractor;
-    
-    public function __construct(CreateInteractor $createInteractor, UpdateInteractor $updateInteractor, DeleteInteractor $deleteInteractor)
-    {
+
+    public function __construct(
+        MemoRepository $memoRepository,
+        CreateInteractor $createInteractor,
+        UpdateInteractor $updateInteractor,
+        DeleteInteractor $deleteInteractor,
+    ) {
+        $this->memoRepository = $memoRepository;
         $this->createInteractor = $createInteractor;
         $this->updateInteractor = $updateInteractor;
         $this->deleteInteractor = $deleteInteractor;
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index(Request $request)
     {
-        $query = Memo::query();
-        // 検索機能
-        if ($search = $request->query('search')) {
-            $query->where('title', 'like', '%'.$search.'%')
-                    ->orWhere('content', 'like', '%'. $search. '%');
-        }
+        $memos = $this->memoRepository->filterMemo(
+            $request->query('search'),
+            $request->query('category'),
+            $request->query('sort') ?? MemoRepository::SORT_DESC
+        );
 
-        // ソート機能（新しい順、古い順）
-        if ($sort = $request->query('sort')) {
-            if ($sort === 'newest') {
-                $query->orderBy('created_at', 'desc');
-            } elseif ($sort === 'oldest') {
-            $query->orderBy('created_at', 'asc');
-            }
-        } else {
-            $query->orderBy('created_at', 'desc');
-        }
+        $categories = Category::all();
 
-        $memos = $query->get();
-        return view('memo.index', compact('memos'));
+        return view('memo.index', compact('memos', 'categories'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        return view('memo.create');
+        $categories = Category::all();
+        return view('memo.create', compact('categories'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(StoreMemoRequest $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required|string',
-        ], [
-            'title.required' => 'タイトルを入力してください',
-            'title.max' => 'タイトルは255文字以下で入力してください',
-            'content.required' => '内容を入力してください',
-        ]);
-
         try{
-            $title = new Title($validated['title']);
-            $content = new Content($validated['content']);
-            $input = new CreateInput($title, $content);
+            $input = new CreateInput(
+                new Title($request->title),
+                new Content($request->content),
+                $request->category_id
+            );
             $this->createInteractor->handle($input);
         
             return redirect()->route('memo.index');
         } catch (InvalidArgumentException $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()])->withInput();
         }
-
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function edit(int $id)
     {
         $memo = Memo::find($id);
 
         if (!$memo) {
-            return redirect()->route('memo.index');
+            return redirect()->route('memo.index')->withErrors(['error' => 'メモが見つかりませんでした']);
         }
-
+        
         return view ('memo.edit', compact('memo'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(UpdateMemoRequest $request, int $id)
     {
-        $validated = $request->validate([
-            'title' => 'required|string',
-            'content' => 'required|string'
-        ]);
+        try {
+            $input = new UpdateInput(
+                $id,
+                new Title($request->title),
+                new Content($request->content),
+            );
+            $this->updateInteractor->handle($input);
 
-        $title = new Title($validated['title']);
-        $content = new Content($validated['content']);
-
-        $input = new UpdateInput($id, $title, $content);
-        $this->updateInteractor->handle($input);
-
-        return redirect()->route('memo.index');
+            return redirect()->route('memo.index');
+        } catch (InvalidArgumentException $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()])->withInput();
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function destroy(int $id)
     {
-        $input = new DeleteInput($id);
-        $this->deleteInteractor->handle($input);
+        try{
+            $input = new DeleteInput($id);
+            $this->deleteInteractor->handle($input);
 
-        return redirect()->route('memo.index');
+            return redirect()->route('memo.index');
+        } catch (InvalidArgumentException $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()])->withInput();
+        }
+    }
+
+    public function showDetail(int $id)
+    {
+        $memo = Memo::find($id);
+
+        if (!$memo) {
+            return redirect()->route('memo.index')->withErrors(['error' => 'メモが見つかりませんでした。']);
+        }
+
+        return view('memo.detail', compact('memo'));
     }
 }
+
 

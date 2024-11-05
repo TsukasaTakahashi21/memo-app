@@ -9,9 +9,7 @@ class Memo extends Model
 {
     use HasFactory;
 
-    // titleおよびcontentフィールドをマスアサインメントで使用
-    // 入力データを使ってモデルの属性を一括で設定
-    protected $fillable = ['title', 'content'];
+    protected $fillable = ['title', 'content', 'category_id'];
 
     public function getTitleAttribute($value)
     {
@@ -21,5 +19,10 @@ class Memo extends Model
     public function getContentAttribute($value)
     {
         return new \App\ValueObject\Content($value);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 }
