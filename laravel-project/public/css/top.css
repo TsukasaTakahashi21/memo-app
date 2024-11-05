@@ -1,7 +1,8 @@
-/* 絞り込み検索セクション */
+
 .filter {
   margin-bottom: 3rem;
 }
+
 .memo-filter {
   margin-bottom: 1rem;
   display: flex;
@@ -11,12 +12,12 @@
   justify-content: flex-start;
 }
 
-/* 検索フォーム */
 .search-form {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  gap: 1rem; /* ボタンと入力フィールドの間隔を調整 */
+  justify-content: center;
+  gap: 1rem; 
+  width: 100%;
 }
 
 .search-form-input, .search-form-select {
@@ -43,7 +44,7 @@
 /* ソートボタン */
 .sort {
   display: flex;
-  gap: 0.5rem; /* ボタン間の余白 */
+  gap: 0.5rem; 
 }
 
 .sort-new-button, .sort-old-button {
@@ -59,7 +60,6 @@
   background-color: #5a6268;
 }
 
-/* テーブル */
 .table {
   width: 100%;
   border-collapse: collapse;
@@ -85,7 +85,6 @@
   border-bottom: 1px solid #ddd;
 }
 
-/* 編集リンクと削除ボタン */
 .edit-link {
   color: #007bff;
   text-decoration: none;
@@ -98,7 +97,6 @@
   color: #0056b3; 
 }
 
-/* 削除ボタンをリンクのように表示 */
 .delete-link {
   background: none; 
   border: none; 
@@ -112,10 +110,6 @@
   color: #0056b3; 
 }
 
-
-
-
-/* フォーム要素のスタイル */
 input[type="text"], select {
   padding: 0.5rem;
   font-size: 1rem;
@@ -134,4 +128,13 @@ input[type="submit"] {
 
 input[type="submit"]:hover {
   background-color: #0056b3;
+}
+
+.memo-detail {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: ##f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }

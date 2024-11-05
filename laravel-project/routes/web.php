@@ -13,6 +13,7 @@ Route::post('/store', [MemoController::class, 'store'])->name('memo.store');
 Route::get('/edit/{id}', [MemoController::class, 'edit'])->name('memo.edit');
 Route::put('/memo/{id}', [MemoController::class, 'update'])->name('memo.update');
 Route::delete('/destroy/{id}', [MemoController::class, 'destroy'])->name('memo.destroy');
+Route::get('/memo/{id}', [MemoController::class, 'showDetail'])->name('memo.detail');
 
 // カテゴリ
 Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');

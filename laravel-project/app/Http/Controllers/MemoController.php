@@ -74,7 +74,7 @@ class MemoController extends Controller
     }
 
 
-    public function edit($id)
+    public function edit(int $id)
     {
         $memo = Memo::find($id);
 
@@ -85,7 +85,7 @@ class MemoController extends Controller
         return view ('memo.edit', compact('memo'));
     }
 
-    public function update(UpdateMemoRequest $request, $id)
+    public function update(UpdateMemoRequest $request, int $id)
     {
         try {
             $input = new UpdateInput(
@@ -101,7 +101,7 @@ class MemoController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy(int $id)
     {
         try{
             $input = new DeleteInput($id);
@@ -113,6 +113,16 @@ class MemoController extends Controller
         }
     }
 
+    public function showDetail(int $id)
+    {
+        $memo = Memo::find($id);
+
+        if (!$memo) {
+            return redirect()->route('memo.index')->withErrors(['error' => 'メモが見つかりませんでした。']);
+        }
+
+        return view('memo.detail', compact('memo'));
+    }
 }
 
 

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
   <link rel="stylesheet" href="{{ asset('css/common.css') }}">
   <link rel="stylesheet" href="{{ asset('css/top.css') }}">
 </head>
+
 <body>
   <header class="header">
     @include('header')
@@ -21,43 +23,28 @@
       <div class="memo-filter">
         <form action="" class="search-form" method="GET">
           @csrf
-          <input type="text" name="search" placeholder="Search..." class="search-form-input" value="{{ request('search') }}">
-          <button type="submit" class="search-form-button">検索</button>
-        </form>
+          <input type="text" name="search" placeholder="キーワード..." class="search-form-input" value="{{ request('search') }}">
+          <div class="category-filter">
+            <select id="category" name="category" class="search-form-select">
+              <option value="">カテゴリーを選択</option>
+              @foreach($categories as $category)
+                <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
+                  {{ $category->name }}
+                </option>
+              @endforeach
+            </select>
+          </div>
 
-        <div class="sort">
-          <form action="{{ route('memo.index') }}" class="sort-new" method="GET">
-            @csrf
+          <div class="sort">
             <input type="hidden" name="search" value="{{ request('search') }}">
             <button type="submit" class="sort-new-button" name="sort" value="newest">新しい順</button>
-          </form>
-          <form action="{{ route('memo.index') }}" class="sort-old" method="GET">
-            @csrf
-            <input type="hidden" name="search" value="{{ request('search') }}">
             <button type="submit" class="sort-old-button" name="sort" value="oldest">古い順</button>
-          </form>
-        </div>
-      </div>
+          </div>
 
-      <div class="category-filter">
-        <!-- 検索とカテゴリフィルター -->
-        <form action="{{ route('memo.index') }}" class="search-form" method="GET">
-              @csrf
-              <label for="category" class="search-form-label">カテゴリ:</label>
-              <select id="category" name="category" class="search-form-select">
-                <option value="">すべて</option>
-                @foreach($categories as $category)
-                  <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
-                      {{ $category->name }}
-                  </option>
-                @endforeach
-              </select>
-              <button type="submit" class="search-form-button">検索</button>
-          </form>
+          <button type="submit" class="search-form-button">検索</button>
+        </form>
       </div>
     </div>
-
-    
 
     <table class="table" border="1">
       <tr class="table-tr">
@@ -70,8 +57,12 @@
 
       @foreach($memos as $memo)
       <tr class="table-tr">
-        <td class="table-td">{{ $memo->title->getValue() }}</td>
-        <td class="table-td">{{ $memo->content->getValue() }}</td>
+        <td class="table-td" onclick="location.href='{{ route('memo.detail', ['id' => $memo->id]) }}'">
+          {{ Str::limit($memo->title->getValue(), 10, '...') }}
+        </td>
+        <td class="table-td" onclick="location.href='{{ route('memo.detail', ['id' => $memo->id]) }}'">
+          {{ Str::limit($memo->content->getValue(), 20, '...') }}
+        </td>
         <td class="table-td">{{ $memo->category ? $memo->category->name : 'カテゴリなし' }}</td>
         <td class="table-td">
           <a href="{{ route('memo.edit', ['id' => $memo->id]) }}" class="edit-link">編集</a>
@@ -80,7 +71,7 @@
           <form action="{{ route('memo.destroy', ['id' => $memo->id]) }}" method="post">
             @method('DELETE')
             @csrf
-            <button type="submit" class="delete-link"">削除</button>
+            <button type="submit" class="delete-link">削除</button>
           </form>
         </td>
       </tr>
