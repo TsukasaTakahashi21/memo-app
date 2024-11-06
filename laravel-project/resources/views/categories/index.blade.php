@@ -1,21 +1,26 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>カテゴリ一覧</title>
-    <link rel="stylesheet" href="{{ asset('css/styles.css') }}"> <!-- スタイルシートをリンク -->
+    <link rel="stylesheet" href="{{ asset('css/common.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/top.css') }}">
 </head>
 <body>
-@include('header')
-    <div class="main">
+    <header class="header">
+        @include('header')
+    </header>
+    <main class="container">
         <div class="title">
             <h1 class="title-top">カテゴリ一覧</h1>
         </div>
 
         <table class="table" border="1">
             <tr class="table-tr">
-                <th class="table-th">カテゴリ名</th>
-                <th class="table-th">編集</th>
-                <th class="table-th">削除</th>
+            <th class="table-th">カテゴリ名</th>
+            <th class="table-th">編集</th>
+            <th class="table-th">削除</th>
             </tr>
 
             @foreach($categories as $category)
@@ -25,16 +30,15 @@
                     <a href="{{ route('categories.edit', ['id' => $category->id]) }}" class="edit-link">編集</a>
                 </td>
                 <td class="table-td">
-                    <form action="{{ route('categories.destroy', ['id' => $category->id]) }}" class="delete" method="POST">
+                    <form action="{{ route('categories.destroy', ['id' => $category->id]) }}" method="post">
                         @method('DELETE')
                         @csrf
-                        <input type="hidden" name="id" value="">
-                        <button type="submit" class="delete-button">削除</button>
+                        <button type="submit" class="delete-link"">削除</button>
                     </form>
                 </td>
             </tr>
             @endforeach
         </table>
-    </div>
+    </main>
 </body>
 </html>

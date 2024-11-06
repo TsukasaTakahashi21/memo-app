@@ -1,0 +1,65 @@
+
+/* タイトル */
+.title-top {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #333;
+}
+
+/* フォームグループ */
+.form-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+/* フォームラベル */
+.form-label {
+  flex: 0 0 100px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* フォーム入力 */
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  color: #333;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* テキストエリア */
+.form-textarea {
+  height: auto;
+}
+
+/* 送信ボタン */
+.form-submit-button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.form-submit-button:hover {
+  background-color: #0056b3;
+}
+
+.submit-group {
+  justify-content: center;
+}
