@@ -8,11 +8,14 @@ class CreateInput
 {
   private Title $title;
   private Content $content;
+  private int $categoryId;
 
-  public function __construct(Title $title, Content $content)
+  public function __construct(Title $title, Content $content, int $categoryId)
   {
     $this->title = $title;
     $this->content = $content;
+    $this->categoryId = $categoryId;
+
   }
 
   public function getTitle(): Title
@@ -23,5 +26,10 @@ class CreateInput
   public function getContent(): Content
   {
     return $this->content;
+  }
+
+  public function getCategoryId(): int
+  {
+    return $this->categoryId;
   }
 }
